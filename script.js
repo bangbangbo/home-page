@@ -10,6 +10,7 @@ document.getElementById('search').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
         const query = this.value.trim();
         if (query) {
+            updateSearchCount();
             window.location.href = searchEngines[currentEngine] + encodeURIComponent(query);
         }
     }
@@ -41,7 +42,7 @@ function toggleSettings() {
 
 // Set preset image
 function setCustomImage(imagePath) {
-    document.body.style.backgroundImage = `url(${imagePath})`;
+    document.body.style.backgroundImage = `url("${imagePath}")`;
     document.body.className = 'custom';
     localStorage.setItem('bgTheme', 'preset');
     localStorage.setItem('presetImage', imagePath);
@@ -51,8 +52,13 @@ function setCustomImage(imagePath) {
         opt.classList.remove('active');
     });
     
-    // Set active image
-    document.querySelector(`[onclick="setCustomImage('${imagePath}')"]`).classList.add('active');
+    // Set active image - find by onclick attribute
+    const activeElement = Array.from(document.querySelectorAll('.image-option')).find(el => 
+        el.getAttribute('onclick').includes(imagePath)
+    );
+    if (activeElement) {
+        activeElement.classList.add('active');
+    }
 }
 
 // Custom background upload
@@ -62,7 +68,7 @@ function uploadCustomBg(event) {
         const reader = new FileReader();
         reader.onload = function(e) {
             const imageUrl = e.target.result;
-            document.body.style.backgroundImage = `url(${imageUrl})`;
+            document.body.style.backgroundImage = `url("${imageUrl}")`;
             document.body.className = 'custom';
             localStorage.setItem('customBg', imageUrl);
             localStorage.setItem('bgTheme', 'custom');
@@ -94,6 +100,62 @@ function updateTime() {
     document.getElementById('time').textContent = `${timeStr} | ${dateStr}`;
 }
 
+// Stats tracking
+let sessionStart = Date.now();
+let clickCount = parseInt(localStorage.getItem('dailyClicks') || '0');
+let searchCount = parseInt(localStorage.getItem('dailySearches') || '0');
+let lastDate = localStorage.getItem('lastVisitDate');
+
+// Reset daily stats if new day
+if (lastDate !== new Date().toDateString()) {
+    clickCount = 0;
+    searchCount = 0;
+    localStorage.setItem('dailyClicks', '0');
+    localStorage.setItem('dailySearches', '0');
+    localStorage.setItem('lastVisitDate', new Date().toDateString());
+}
+
+// Update session time
+function updateSessionTime() {
+    const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+    const minutes = Math.floor(elapsed / 60);
+    const seconds = elapsed % 60;
+    document.getElementById('sessionTime').textContent = 
+        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+// Update click counter
+function updateClickCount() {
+    clickCount++;
+    document.getElementById('clickCount').textContent = clickCount;
+    localStorage.setItem('dailyClicks', clickCount.toString());
+}
+
+// Update search counter
+function updateSearchCount() {
+    searchCount++;
+    document.getElementById('searchCount').textContent = searchCount;
+    localStorage.setItem('dailySearches', searchCount.toString());
+}
+
+// Daily quotes
+const quotes = [
+    "The best way to predict the future is to create it. - Peter Drucker",
+    "Code is like humor. When you have to explain it, it's bad. - Cory House",
+    "First, solve the problem. Then, write the code. - John Johnson",
+    "Experience is the name everyone gives to their mistakes. - Oscar Wilde",
+    "In order to be irreplaceable, one must always be different. - Coco Chanel",
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "Innovation distinguishes between a leader and a follower. - Steve Jobs",
+    "Stay hungry, stay foolish. - Steve Jobs"
+];
+
+function setDailyQuote() {
+    const today = new Date().getDate();
+    const quote = quotes[today % quotes.length];
+    document.getElementById('dailyQuote').textContent = quote;
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
     // Load saved theme
@@ -102,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (savedTheme === 'custom') {
         const customBg = localStorage.getItem('customBg');
         if (customBg) {
-            document.body.style.backgroundImage = `url(${customBg})`;
+            document.body.style.backgroundImage = `url("${customBg}")`;
             document.body.className = 'custom';
         }
     } else if (savedTheme === 'preset') {
@@ -112,9 +174,24 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Start time
+    // Initialize stats
+    document.getElementById('clickCount').textContent = clickCount;
+    document.getElementById('searchCount').textContent = searchCount;
+    setDailyQuote();
+    
+    // Start timers
     updateTime();
     setInterval(updateTime, 1000);
+    setInterval(updateSessionTime, 1000);
+    
+    // Track clicks
+    document.addEventListener('click', updateClickCount);
+    
+    // Custom cursor tracking
+    document.addEventListener('mousemove', (e) => {
+        document.body.style.setProperty('--mouse-x', e.clientX + 'px');
+        document.body.style.setProperty('--mouse-y', e.clientY + 'px');
+    });
     
     // Close settings when clicking outside
     document.addEventListener('click', function(e) {

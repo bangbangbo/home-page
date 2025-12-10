@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberHub</title>
+    <title>Welcome Back Rahul Raval</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="backgrounds.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -16,30 +16,30 @@
     </div>
     
     <div class="settings-panel" id="settingsPanel">
-        <h3>Your Images</h3>
+        <h3><i class="fas fa-images"></i> Backgrounds</h3>
         <div class="image-gallery">
-            <div class="image-option" onclick="setCustomImage('images/Abstract - Nature.jpg')">
-                <img src="images/Abstract - Nature.jpg" alt="Abstract Nature">
+            <div class="image-option" onclick="setCustomImage('./images/Abstract%20-%20Nature.jpg')">
+                <img src="./images/Abstract%20-%20Nature.jpg" alt="Abstract Nature" onerror="this.parentElement.style.display='none'">
                 <span>Abstract Nature</span>
             </div>
-            <div class="image-option" onclick="setCustomImage('images/Fantasy - Mountain Lake.jpeg')">
-                <img src="images/Fantasy - Mountain Lake.jpeg" alt="Mountain Lake">
+            <div class="image-option" onclick="setCustomImage('./images/Fantasy%20-%20Mountain%20Lake.jpeg')">
+                <img src="./images/Fantasy%20-%20Mountain%20Lake.jpeg" alt="Mountain Lake" onerror="this.parentElement.style.display='none'">
                 <span>Mountain Lake</span>
             </div>
-            <div class="image-option" onclick="setCustomImage('images/Garage.jpg')">
-                <img src="images/Garage.jpg" alt="Garage">
+            <div class="image-option" onclick="setCustomImage('./images/Garage.jpg')">
+                <img src="./images/Garage.jpg" alt="Garage" onerror="this.parentElement.style.display='none'">
                 <span>Garage</span>
             </div>
-            <div class="image-option" onclick="setCustomImage('images/Lofi-Urban-Nightscape.png')">
-                <img src="images/Lofi-Urban-Nightscape.png" alt="Urban Night">
+            <div class="image-option" onclick="setCustomImage('./images/Lofi-Urban-Nightscape.png')">
+                <img src="./images/Lofi-Urban-Nightscape.png" alt="Urban Night" onerror="this.parentElement.style.display='none'">
                 <span>Urban Night</span>
             </div>
-            <div class="image-option" onclick="setCustomImage('images/Sun-Setting-Horizon.png')">
-                <img src="images/Sun-Setting-Horizon.png" alt="Sunset">
+            <div class="image-option" onclick="setCustomImage('./images/Sun-Setting-Horizon.png')">
+                <img src="./images/Sun-Setting-Horizon.png" alt="Sunset" onerror="this.parentElement.style.display='none'">
                 <span>Sunset</span>
             </div>
-            <div class="image-option" onclick="setCustomImage('images/Under_Starlit_Sky.png')">
-                <img src="images/Under_Starlit_Sky.png" alt="Starlit Sky">
+            <div class="image-option" onclick="setCustomImage('./images/Under_Starlit_Sky.png')">
+                <img src="./images/Under_Starlit_Sky.png" alt="Starlit Sky" onerror="this.parentElement.style.display='none'">
                 <span>Starlit Sky</span>
             </div>
         </div>
@@ -53,14 +53,18 @@
     
     <div class="container">
         <div class="header">
-            <h1><i class="fas fa-terminal"></i> CyberHub</h1>
+            <div class="welcome-message">
+                <h1><i class="fas fa-user-astronaut"></i> Welcome Back</h1>
+                <h2 class="name-highlight">Rahul Raval</h2>
+                <p class="subtitle">Ready to conquer the digital world?</p>
+            </div>
             <div class="time" id="time"></div>
         </div>
         
         <div class="search-container">
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" id="search" placeholder="Search the web..." autofocus>
+                <input type="text" id="search"   placeholder="Search the web..." autofocus>
             </div>
             <div class="search-engines">
                 <button onclick="setSearchEngine('google')" class="engine active" data-engine="google">Google</button>
@@ -81,6 +85,7 @@
                         <i class="fas fa-flag"></i>
                         <span>TryHackMe</span>
                     </a>
+                    
                 </div>
             </div>
             
@@ -128,8 +133,36 @@
                 </div>
             </div>
         </div>
+        
+        <div class="stats-panel">
+            <div class="stat-card">
+                <i class="fas fa-clock"></i>
+                <span class="stat-label">Session Time</span>
+                <span class="stat-value" id="sessionTime">00:00</span>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-mouse-pointer"></i>
+                <span class="stat-label">Clicks Today</span>
+                <span class="stat-value" id="clickCount">0</span>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-search"></i>
+                <span class="stat-label">Searches</span>
+                <span class="stat-value" id="searchCount">0</span>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="shortcuts-info">
+                <span><kbd>Ctrl</kbd> + <kbd>/</kbd> Focus Search</span>
+                <span><kbd>Esc</kbd> Close Settings</span>
+                <span><kbd>⚙️</kbd> Settings Panel</span>
+            </div>
+            <div class="quote" id="dailyQuote">"The best way to predict the future is to create it."</div>
+        </div>
     </div>
     
     <script src="script.js"></script>
+    <script src="particles.js"></script>
 </body>
 </html>
