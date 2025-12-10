@@ -5,73 +5,267 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    background: #0a0a0a;
+}
+
+body.cyber {
+    background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460);
+}
+
+body.matrix {
+    background: linear-gradient(135deg, #000000, #001100, #003300);
+}
+
+body.hacker {
+    background: linear-gradient(45deg, #0d1421, #1a252f, #2c3e50);
+}
+
+body.dark {
+    background: linear-gradient(135deg, #2c3e50, #34495e, #2c3e50);
+}
+
+.bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+    z-index: -1;
+}
+
+.settings-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 20px;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.settings-btn:hover {
+    background: rgba(255,255,255,0.2);
+    transform: rotate(90deg);
+}
+
+.settings-panel {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 20px;
+    color: white;
+    transform: translateX(300px);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    min-width: 200px;
+}
+
+.settings-panel.active {
+    transform: translateX(0);
+}
+
+.settings-panel h3 {
+    margin-bottom: 15px;
+    color: #00ff88;
+}
+
+.bg-options {
+    display: grid;
+    gap: 10px;
+}
+
+.bg-option {
+    padding: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.bg-option:hover, .bg-option.active {
+    background: rgba(0,255,136,0.2);
+    color: #00ff88;
 }
 
 .container {
-    text-align: center;
-    max-width: 800px;
-    width: 90%;
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-h1 {
-    color: white;
-    font-size: 3rem;
-    margin-bottom: 2rem;
-    font-weight: 300;
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.header h1 {
+    color: #00ff88;
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(0,255,136,0.5);
+    font-weight: 700;
+}
+
+.time {
+    color: rgba(255,255,255,0.7);
+    font-size: 1.2rem;
+    font-family: 'Courier New', monospace;
+}
+
+.search-container {
+    text-align: center;
+    margin-bottom: 50px;
 }
 
 .search-box {
-    margin-bottom: 3rem;
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto 20px;
+}
+
+.search-box i {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 18px;
 }
 
 #search {
     width: 100%;
-    max-width: 500px;
-    padding: 15px 20px;
+    padding: 18px 20px 18px 55px;
     font-size: 16px;
     border: none;
-    border-radius: 25px;
+    border-radius: 30px;
     outline: none;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+#search:focus {
+    box-shadow: 0 8px 32px rgba(0,255,136,0.3);
+    background: white;
+}
+
+.search-engines {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.engine {
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.engine:hover, .engine.active {
+    background: rgba(0,255,136,0.2);
+    border-color: #00ff88;
+    color: #00ff88;
+}
+
+.categories {
+    display: grid;
+    gap: 40px;
+}
+
+.category h3 {
+    color: #00ff88;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(0,255,136,0.3);
 }
 
 .shortcuts {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 20px;
-    max-width: 600px;
+    max-width: 900px;
     margin: 0 auto;
 }
 
 .shortcut {
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 15px;
-    padding: 20px;
+    padding: 25px 15px;
     text-decoration: none;
     color: white;
     transition: all 0.3s ease;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.shortcut::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0,255,136,0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.shortcut:hover::before {
+    left: 100%;
 }
 
 .shortcut:hover {
-    background: rgba(255,255,255,0.2);
+    background: rgba(0,255,136,0.1);
+    border-color: rgba(0,255,136,0.3);
     transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,255,136,0.2);
+}
+
+.shortcut i {
+    font-size: 24px;
+    color: #00ff88;
 }
 
 .shortcut span {
     font-size: 14px;
     font-weight: 500;
+    text-align: center;
 }
 
-@media (max-width: 600px) {
-    h1 { font-size: 2rem; }
+@media (max-width: 768px) {
+    .header h1 { font-size: 2.5rem; }
     .shortcuts { grid-template-columns: repeat(2, 1fr); }
+    .categories { gap: 30px; }
+    .container { padding: 20px 15px; }
+    .settings-panel { right: 10px; top: 70px; }
 }
