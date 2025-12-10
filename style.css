@@ -87,24 +87,7 @@ body.dark {
     color: #00ff88;
 }
 
-.bg-options {
-    display: grid;
-    gap: 10px;
-}
 
-.bg-option {
-    padding: 10px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-.bg-option:hover, .bg-option.active {
-    background: rgba(0,255,136,0.2);
-    color: #00ff88;
-}
 
 .custom-bg {
     margin-top: 20px;

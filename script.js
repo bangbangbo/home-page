@@ -37,16 +37,7 @@ function toggleSettings() {
     panel.classList.toggle('active');
 }
 
-// Background themes
-function changeBg(theme) {
-    document.body.className = theme;
-    localStorage.setItem('bgTheme', theme);
-    
-    document.querySelectorAll('.bg-option').forEach(opt => {
-        opt.classList.remove('active');
-    });
-    document.querySelector(`[data-bg="${theme}"]`).classList.add('active');
-}
+
 
 // Set preset image
 function setCustomImage(imagePath) {
@@ -56,7 +47,7 @@ function setCustomImage(imagePath) {
     localStorage.setItem('presetImage', imagePath);
     
     // Clear all active states
-    document.querySelectorAll('.bg-option, .image-option').forEach(opt => {
+    document.querySelectorAll('.image-option').forEach(opt => {
         opt.classList.remove('active');
     });
     
@@ -77,7 +68,7 @@ function uploadCustomBg(event) {
             localStorage.setItem('bgTheme', 'custom');
             
             // Clear active states
-            document.querySelectorAll('.bg-option, .image-option').forEach(opt => {
+            document.querySelectorAll('.image-option').forEach(opt => {
                 opt.classList.remove('active');
             });
         };
@@ -106,25 +97,19 @@ function updateTime() {
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
     // Load saved theme
-    const savedTheme = localStorage.getItem('bgTheme') || 'cyber';
+    const savedTheme = localStorage.getItem('bgTheme');
     
     if (savedTheme === 'custom') {
         const customBg = localStorage.getItem('customBg');
         if (customBg) {
             document.body.style.backgroundImage = `url(${customBg})`;
             document.body.className = 'custom';
-        } else {
-            changeBg('cyber');
         }
     } else if (savedTheme === 'preset') {
         const presetImage = localStorage.getItem('presetImage');
         if (presetImage) {
             setCustomImage(presetImage);
-        } else {
-            changeBg('cyber');
         }
-    } else {
-        changeBg(savedTheme);
     }
     
     // Start time
