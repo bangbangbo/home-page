@@ -1,4 +1,7 @@
 let currentEngine = 'google';
+let user = 'vemacitrind';
+const API_KEY = 'YOUR_API_KEY';
+const city = 'Delhi';
 const searchEngines = {
     google: 'https://www.google.com/search?q=',
     duckduckgo: 'https://duckduckgo.com/?q=',
@@ -6,13 +9,16 @@ const searchEngines = {
 };
 
 // Search functionality
-document.getElementById('search').addEventListener('keypress', function(e) {
+document.getElementById('search').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
         const query = this.value.trim();
         if (query) {
-            updateSearchCount();
-            window.location.href = searchEngines[currentEngine] + encodeURIComponent(query);
+            window.open(
+                searchEngines[currentEngine] + encodeURIComponent(query),
+                "_blank"
+            );
         }
+
     }
 });
 
@@ -23,13 +29,6 @@ function setSearchEngine(engine) {
         btn.classList.remove('active');
     });
     document.querySelector(`[data-engine="${engine}"]`).classList.add('active');
-    
-    const placeholder = {
-        google: 'Search Google...',
-        duckduckgo: 'Search DuckDuckGo...',
-        bing: 'Search Bing...'
-    };
-    document.getElementById('search').placeholder = placeholder[engine];
 }
 
 // Settings panel
@@ -38,22 +37,85 @@ function toggleSettings() {
     panel.classList.toggle('active');
 }
 
+// Theme toggle functionality
+let isDarkTheme = true;
+let particlesEnabled = true;
 
+function toggleTheme() {
+    const body = document.body;
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.querySelector('#themeButton span');
+
+    if (isDarkTheme) {
+        body.classList.remove('darktheme');
+        body.classList.add('lighttheme');
+        themeIcon.className = 'fas fa-moon';
+        themeText.textContent = 'Light Theme';
+    } else {
+        body.classList.remove('lighttheme');
+        body.classList.add('darktheme');
+        themeIcon.className = 'fas fa-sun';
+        themeText.textContent = 'Dark Theme';
+    }
+
+    isDarkTheme = !isDarkTheme;
+    localStorage.setItem('isDarkTheme', isDarkTheme);
+}
+
+function toggleParticles() {
+    const particleIcon = document.getElementById('particleIcon');
+    const particleText = document.querySelector('#particleButton span');
+
+    particlesEnabled = !particlesEnabled;
+
+    if (particlesEnabled) {
+        particleIcon.className = 'fas fa-sparkles';
+        particleText.textContent = 'Particles On';
+        if (window.particlesJS) {
+            document.getElementById('particles-js')?.remove();
+            const canvas = document.createElement('div');
+            canvas.id = 'particles-js';
+            document.body.appendChild(canvas);
+        }
+    } else {
+        particleIcon.className = 'fas fa-ban';
+        particleText.textContent = 'Particles Off';
+        document.getElementById('particles-js')?.remove();
+    }
+
+    localStorage.setItem('particlesEnabled', particlesEnabled);
+}
+
+function setAccentColor(color) {
+    document.documentElement.style.setProperty('--primary', color);
+    document.documentElement.style.setProperty('--primary-dark', color + 'dd');
+
+    document.querySelectorAll('.color-option').forEach(opt => {
+        opt.classList.remove('active');
+    });
+    document.querySelector(`[data-color="${color}"]`).classList.add('active');
+
+    localStorage.setItem('accentColor', color);
+}
 
 // Set preset image
 function setCustomImage(imagePath) {
-    document.body.style.backgroundImage = `url("${imagePath}")`;
-    document.body.className = 'custom';
+    const currentTheme = isDarkTheme ? 'darktheme' : 'lighttheme';
+    document.body.style.backgroundImage = `var(--imgcol), url("${imagePath}")`;
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundPosition = 'center';
+    document.body.style.backgroundRepeat = 'no-repeat';
+    document.body.className = `${currentTheme} withImageBackground`;
     localStorage.setItem('bgTheme', 'preset');
     localStorage.setItem('presetImage', imagePath);
-    
+
     // Clear all active states
     document.querySelectorAll('.image-option').forEach(opt => {
         opt.classList.remove('active');
     });
-    
+
     // Set active image - find by onclick attribute
-    const activeElement = Array.from(document.querySelectorAll('.image-option')).find(el => 
+    const activeElement = Array.from(document.querySelectorAll('.image-option')).find(el =>
         el.getAttribute('onclick').includes(imagePath)
     );
     if (activeElement) {
@@ -61,29 +123,22 @@ function setCustomImage(imagePath) {
     }
 }
 
-// Auto-detect new images in folder
-function loadImagesFromFolder() {
-    const commonExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'];
-    const imageGallery = document.querySelector('.image-gallery');
-    const existingImages = Array.from(document.querySelectorAll('.image-option img')).map(img => img.src);
-    
-    // This function will work when you add new images manually to the HTML
-    // For automatic detection, you'd need a server-side script
-    console.log('Image gallery ready for new additions');
-}
-
 // Custom background upload
 function uploadCustomBg(event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             const imageUrl = e.target.result;
-            document.body.style.backgroundImage = `url("${imageUrl}")`;
-            document.body.className = 'custom';
+            const currentTheme = isDarkTheme ? 'darktheme' : 'lighttheme';
+            document.body.style.backgroundImage = `var(--imgcol), url("${imageUrl}")`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundPosition = 'center';
+            document.body.style.backgroundRepeat = 'no-repeat';
+            document.body.className = `${currentTheme} withImageBackground`;
             localStorage.setItem('customBg', imageUrl);
             localStorage.setItem('bgTheme', 'custom');
-            
+
             // Clear active states
             document.querySelectorAll('.image-option').forEach(opt => {
                 opt.classList.remove('active');
@@ -97,123 +152,126 @@ function uploadCustomBg(event) {
 function updateTime() {
     const now = new Date();
     const timeStr = now.toLocaleTimeString('en-US', {
-        hour12: false,
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
+        hour12: true,
+        hour: 'numeric',
+        minute: '2-digit'
     });
+    document.getElementById('time').textContent = timeStr;
+}
+
+// Date display
+function updateDate() {
+    const now = new Date();
     const dateStr = now.toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
+        month: 'short',
         day: 'numeric'
     });
-    document.getElementById('time').textContent = `${timeStr} | ${dateStr}`;
+    document.getElementById('date').textContent = dateStr;
 }
 
-// Stats tracking
-let sessionStart = Date.now();
-let clickCount = parseInt(localStorage.getItem('dailyClicks') || '0');
-let searchCount = parseInt(localStorage.getItem('dailySearches') || '0');
-let lastDate = localStorage.getItem('lastVisitDate');
+// Greeting based on time
+function updateGreeting() {
+    const now = new Date();
+    const hour = now.getHours();
+    let greeting;
 
-// Reset daily stats if new day
-if (lastDate !== new Date().toDateString()) {
-    clickCount = 0;
-    searchCount = 0;
-    localStorage.setItem('dailyClicks', '0');
-    localStorage.setItem('dailySearches', '0');
-    localStorage.setItem('lastVisitDate', new Date().toDateString());
+    if (hour < 12) {
+        greeting = 'Good morning';
+    } else if (hour < 17) {
+        greeting = 'Good afternoon';
+    } else {
+        greeting = 'Good evening';
+    }
+
+    document.getElementById('greetings').textContent = `${greeting}, <span class="master">${vemacitrind}</span>`;
 }
 
-// Update session time
-function updateSessionTime() {
-    const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
-    const minutes = Math.floor(elapsed / 60);
-    const seconds = elapsed % 60;
-    document.getElementById('sessionTime').textContent = 
-        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-}
+// Weather API
+async function updateWeather() {
+    try {
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
+        const data = await response.json();
 
-// Update click counter
-function updateClickCount() {
-    clickCount++;
-    document.getElementById('clickCount').textContent = clickCount;
-    localStorage.setItem('dailyClicks', clickCount.toString());
-}
-
-// Update search counter
-function updateSearchCount() {
-    searchCount++;
-    document.getElementById('searchCount').textContent = searchCount;
-    localStorage.setItem('dailySearches', searchCount.toString());
-}
-
-// Daily quotes
-const quotes = [
-    "The best way to predict the future is to create it. - Peter Drucker",
-    "Code is like humor. When you have to explain it, it's bad. - Cory House",
-    "First, solve the problem. Then, write the code. - John Johnson",
-    "Experience is the name everyone gives to their mistakes. - Oscar Wilde",
-    "In order to be irreplaceable, one must always be different. - Coco Chanel",
-    "The only way to do great work is to love what you do. - Steve Jobs",
-    "Innovation distinguishes between a leader and a follower. - Steve Jobs",
-    "Stay hungry, stay foolish. - Steve Jobs"
-];
-
-function setDailyQuote() {
-    const today = new Date().getDate();
-    const quote = quotes[today % quotes.length];
-    document.getElementById('dailyQuote').textContent = quote;
+        document.getElementById('temperature').textContent = `${Math.round(data.main.temp)}°C`;
+        document.getElementById('description').textContent = data.weather[0].description;
+    } catch (error) {
+        console.log('Weather API error:', error);
+        // Keep default values if API fails
+    }
 }
 
 // Initialize
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Load saved theme
-    const savedTheme = localStorage.getItem('bgTheme');
-    
-    if (savedTheme === 'custom') {
+    const savedBgTheme = localStorage.getItem('bgTheme');
+
+    if (savedBgTheme === 'custom') {
         const customBg = localStorage.getItem('customBg');
         if (customBg) {
-            document.body.style.backgroundImage = `url("${customBg}")`;
-            document.body.className = 'custom';
+            const currentTheme = isDarkTheme ? 'darktheme' : 'lighttheme';
+            document.body.style.backgroundImage = `var(--imgcol), url("${customBg}")`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundPosition = 'center';
+            document.body.style.backgroundRepeat = 'no-repeat';
+            document.body.className = `${currentTheme} withImageBackground`;
         }
-    } else if (savedTheme === 'preset') {
+    } else if (savedBgTheme === 'preset') {
         const presetImage = localStorage.getItem('presetImage');
         if (presetImage) {
             setCustomImage(presetImage);
         }
     }
-    
-    // Initialize stats
-    document.getElementById('clickCount').textContent = clickCount;
-    document.getElementById('searchCount').textContent = searchCount;
-    setDailyQuote();
-    
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('isDarkTheme');
+    if (savedTheme !== null) {
+        isDarkTheme = savedTheme === 'true';
+        if (!isDarkTheme) {
+            toggleTheme();
+        }
+    }
+
+    // Load saved particle setting
+    const savedParticles = localStorage.getItem('particlesEnabled');
+    if (savedParticles !== null) {
+        particlesEnabled = savedParticles === 'true';
+        if (!particlesEnabled) {
+            toggleParticles();
+        }
+    }
+
+    // Load saved accent color
+    const savedColor = localStorage.getItem('accentColor');
+    if (savedColor) {
+        setAccentColor(savedColor);
+    }
+
     // Start timers
     updateTime();
+    updateDate();
+    updateGreeting();
+    updateWeather();
     setInterval(updateTime, 1000);
-    setInterval(updateSessionTime, 1000);
-    
-    // Track clicks
-    document.addEventListener('click', updateClickCount);
-    
-    // Custom cursor tracking - optimized
+    setInterval(updateDate, 60000);
+    setInterval(updateGreeting, 60000);
+    setInterval(updateWeather, 300000); // Update weather every 5 minutes
+
+    // Custom cursor tracking
     let mouseX = 0, mouseY = 0;
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
     });
-    
+
     function updateCursor() {
         document.body.style.setProperty('--mouse-x', mouseX + 'px');
         document.body.style.setProperty('--mouse-y', mouseY + 'px');
         requestAnimationFrame(updateCursor);
     }
     updateCursor();
-    
+
     // Close settings when clicking outside
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         const panel = document.getElementById('settingsPanel');
         const btn = document.querySelector('.settings-btn');
         if (!panel.contains(e.target) && !btn.contains(e.target)) {
@@ -223,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Keyboard shortcuts
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     if (e.ctrlKey && e.key === '/') {
         e.preventDefault();
         document.getElementById('search').focus();

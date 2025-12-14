@@ -3,53 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Back Rahul Raval</title>
+    <title>HOME PAGE</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="backgrounds.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+   <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
 </head>
-<body>
-    <div class="bg-overlay"></div>
-    
+<body class="darktheme withImageBackground" style="background-image: var(--imgcol), url('./images/demon.jpg');">
     <div class="settings-btn" onclick="toggleSettings()">
         <i class="fas fa-cog"></i>
     </div>
     
     <div class="settings-panel" id="settingsPanel">
+        <div class="theme-toggle">
+            <button id="themeButton" onclick="toggleTheme()">
+                <i class="fas fa-sun" id="themeIcon"></i>
+                <span>Dark Theme</span>
+            </button>
+        </div>
+        <div class="particle-toggle">
+            <button id="particleButton" onclick="toggleParticles()">
+                <i class="fas fa-sparkles" id="particleIcon"></i>
+                <span>Particles</span>
+            </button>
+        </div>
+        <div class="accent-colors">
+            <h3><i class="fas fa-palette"></i> Accent Color</h3>
+            <div class="color-options">
+                <div class="color-option active" data-color="#2196F3" style="background: #2196F3" onclick="setAccentColor('#2196F3')"></div>
+                <div class="color-option" data-color="#9C27B0" style="background: #9C27B0" onclick="setAccentColor('#9C27B0')"></div>
+                <div class="color-option" data-color="#FF5722" style="background: #FF5722" onclick="setAccentColor('#FF5722')"></div>
+                <div class="color-option" data-color="#4CAF50" style="background: #4CAF50" onclick="setAccentColor('#4CAF50')"></div>
+                <div class="color-option" data-color="#FF9800" style="background: #FF9800" onclick="setAccentColor('#FF9800')"></div>
+                <div class="color-option" data-color="#E91E63" style="background: #E91E63" onclick="setAccentColor('#E91E63')"></div>
+            </div>
+        </div>
         <h3><i class="fas fa-images"></i> Backgrounds</h3>
         <div class="image-gallery">
-            <div class="image-option" onclick="setCustomImage('./images/Abstract%20-%20Nature.jpg')">
-                <img src="./images/Abstract%20-%20Nature.jpg" alt="Abstract Nature" onerror="this.parentElement.style.display='none'">
-                <span>Abstract Nature</span>
+            <div class="image-option" onclick="setCustomImage('./images/demon.jpg')">
+                <img src="./images/demon.jpg" alt="Demon" onerror="this.parentElement.style.display='none'">
+                <span>Demon</span>
             </div>
-            <div class="image-option" onclick="setCustomImage('./images/Fantasy%20-%20Mountain%20Lake.jpeg')">
-                <img src="./images/Fantasy%20-%20Mountain%20Lake.jpeg" alt="Mountain Lake" onerror="this.parentElement.style.display='none'">
-                <span>Mountain Lake</span>
+            <div class="image-option" onclick="setCustomImage('./images/Demon.png')">
+                <img src="./images/Demon.png" alt="Demon PNG" onerror="this.parentElement.style.display='none'">
+                <span>Demon PNG</span>
             </div>
             <div class="image-option" onclick="setCustomImage('./images/Garage.jpg')">
                 <img src="./images/Garage.jpg" alt="Garage" onerror="this.parentElement.style.display='none'">
                 <span>Garage</span>
             </div>
-            <div class="image-option" onclick="setCustomImage('./images/Lofi-Urban-Nightscape.png')">
-                <img src="./images/Lofi-Urban-Nightscape.png" alt="Urban Night" onerror="this.parentElement.style.display='none'">
-                <span>Urban Night</span>
+            <div class="image-option" onclick="setCustomImage('./images/image.png')">
+                <img src="./images/image.png" alt="Image" onerror="this.parentElement.style.display='none'">
+                <span>Image</span>
             </div>
-            <div class="image-option" onclick="setCustomImage('./images/Sun-Setting-Horizon.png')">
-                <img src="./images/Sun-Setting-Horizon.png" alt="Sunset" onerror="this.parentElement.style.display='none'">
-                <span>Sunset</span>
+            <div class="image-option" onclick="setCustomImage('./images/Purple.png')">
+                <img src="./images/Purple.png" alt="Purple" onerror="this.parentElement.style.display='none'">
+                <span>Purple</span>
             </div>
-            <div class="image-option" onclick="setCustomImage('./images/Under_Starlit_Sky.png')">
-                <img src="./images/Under_Starlit_Sky.png" alt="Starlit Sky" onerror="this.parentElement.style.display='none'">
-                <span>Starlit Sky</span>
+            <div class="image-option" onclick="setCustomImage('./images/windows.jpg')">
+                <img src="./images/windows.jpg" alt="Windows" onerror="this.parentElement.style.display='none'">
+                <span>Windows</span>
             </div>
-            
-            <!-- ADD NEW IMAGES HERE -->
-            <!-- Template for new images:
-            <div class="image-option" onclick="setCustomImage('./images/YOUR_IMAGE_NAME.jpg')">
-                <img src="./images/YOUR_IMAGE_NAME.jpg" alt="Display Name" onerror="this.parentElement.style.display='none'">
-                <span>Display Name</span>
-            </div>
-            -->
         </div>
         <div class="custom-bg">
             <input type="file" id="bgUpload" accept="image/*" onchange="uploadCustomBg(event)">
@@ -58,123 +72,72 @@
             </label>
         </div>
     </div>
+    <!-- Completed -->
+    <div class="top-section">
+        <div class="time-greeting">
+            <div id="time">4:28 PM</div>
+            <div id="greetings">Good afternoon, <span class="master">vemacitrind</span></div>
+        </div>
+        <div class="weather-date">
+            <div id="date">Dec 14</div>
+            <div class="weather">
+                <div id="temperature">24°C</div>
+                <div id="description">smoke</div>
+            </div>
+        </div>
+    </div> 
     
-    <div class="container">
-        <div class="header">
-            <div class="welcome-message">
-                <h1><i class="fas fa-user-astronaut"></i> Welcome Back</h1>
-                <h2 class="name-highlight">Rahul Raval</h2>
-                <p class="subtitle">Ready to conquer the digital world?</p>
-            </div>
-            <div class="time" id="time"></div>
+    <div class="search-section">
+        <div class="search-box">
+            <input type="text" id="search" placeholder="Search the web..." autofocus>
+        </div>
+        <div class="search-engines">
+            <button onclick="setSearchEngine('google')" class="engine active" data-engine="google">
+                <iconify-icon icon="ri:google-fill"></iconify-icon>
+            </button>
+            <button onclick="setSearchEngine('duckduckgo')" class="engine" data-engine="duckduckgo">
+                <iconify-icon icon="simple-icons:duckduckgo"></iconify-icon>
+            </button>
+            <button onclick="setSearchEngine('bing')" class="engine" data-engine="bing">
+                <iconify-icon icon="cib:bing"></iconify-icon>
+            </button>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="card list">
+            <iconify-icon icon="lsicon:star-filled" class="listIcon"></iconify-icon>
+            <a target="_blank" href="https://github.com/vemacitrind" class="listItem">GitHub</a>
+            <a target="_blank" href="https://in.linkedin.com/" class="listItem">LinkedIn</a>
+            <a target="_blank" href="https://chatgpt.com/" class="listItem">ChatGPT</a>
+            <a target="_blank" href="https://perplexity.ai/" class="listItem">Perplexity</a>
         </div>
         
-        <div class="search-container">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="search"   placeholder="Search the web..." autofocus>
-            </div>
-            <div class="search-engines">
-                <button onclick="setSearchEngine('google')" class="engine active" data-engine="google">Google</button>
-                <button onclick="setSearchEngine('duckduckgo')" class="engine" data-engine="duckduckgo">DuckDuckGo</button>
-                <button onclick="setSearchEngine('bing')" class="engine" data-engine="bing">Bing</button>
-            </div>
+        <div class="card list">
+            <iconify-icon icon="mdi:television" class="listIcon"></iconify-icon>
+            <a target="_blank" href="https://www.youtube.com" class="listItem">YouTube</a>
+            <a target="_blank" href="https://web.whatsapp.com" class="listItem">WhatsApp</a>
+            <a target="_blank" href="https://gmail.com" class="listItem">Gmail</a>
+            <a target="_blank" href="https://reddit.com" class="listItem">Reddit</a>
         </div>
         
-        <div class="categories">
-            <div class="category">
-                <h3><i class="fas fa-shield-alt"></i> Security & Hacking</h3>
-                <div class="shortcuts">
-                    <a href="https://account.hackthebox.com/" class="shortcut">
-                        <i class="fas fa-cube"></i>
-                        <span>Hack The Box</span>
-                    </a>
-                    <a href="https://tryhackme.com" class="shortcut">
-                        <i class="fas fa-flag"></i>
-                        <span>TryHackMe</span>
-                    </a>
-                    
-                </div>
-            </div>
-            
-            <div class="category">
-                <h3><i class="fas fa-code"></i> Development</h3>
-                <div class="shortcuts">
-                    <a href="https://github.com" class="shortcut">
-                        <i class="fab fa-github"></i>
-                        <span>GitHub</span>
-                    </a>
-                    <a href="https://perplexity.ai" class="shortcut">
-                        <i class="fas fa-brain"></i>
-                        <span>Perplexity</span>
-                    </a>
-                    <a href="https://chatgpt.com" class="shortcut">
-                        <i class="fas fa-robot"></i>
-                        <span>ChatGPT</span>
-                    </a>
-                    <a href="https://grok.x.ai" class="shortcut">
-                        <i class="fas fa-bolt"></i>
-                        <span>Grok</span>
-                    </a>
-                    <a href="https://replit.com" class="shortcut">
-                        <i class="fas fa-play"></i>
-                        <span>Replit</span>
-                    </a>
-                </div>
-            </div>
-            
-            <div class="category">
-                <h3><i class="fas fa-globe"></i> Daily Use</h3>
-                <div class="shortcuts">
-                    <a href="https://web.whatsapp.com" class="shortcut">
-                        <i class="fab fa-whatsapp"></i>
-                        <span>WhatsApp</span>
-                    </a>
-                    <a href="https://gmail.com" class="shortcut">
-                        <i class="fas fa-envelope"></i>
-                        <span>Gmail</span>
-                    </a>
-                    <a href="https://youtube.com" class="shortcut">
-                        <i class="fab fa-youtube"></i>
-                        <span>YouTube</span>
-                    </a>
-                    <a href="https://reddit.com" class="shortcut">
-                        <i class="fab fa-reddit"></i>
-                        <span>Reddit</span>
-                    </a>
-                </div>
-            </div>
+        <div class="card list">
+            <iconify-icon icon="charm:binary" class="listIcon"></iconify-icon>
+            <a target="_blank" href="https://account.hackthebox.com/" class="listItem">Hack The Box</a>
+            <a target="_blank" href="https://tryhackme.com" class="listItem">TryHackMe</a>
+            <a target="_blank" href="https://replit.com" class="listItem">Replit</a>
+            <a target="_blank" href="https://grok.x.ai" class="listItem">Grok</a>
         </div>
         
-        <div class="stats-panel">
-            <div class="stat-card">
-                <i class="fas fa-clock"></i>
-                <span class="stat-label">Session Time</span>
-                <span class="stat-value" id="sessionTime">00:00</span>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-mouse-pointer"></i>
-                <span class="stat-label">Clicks Today</span>
-                <span class="stat-value" id="clickCount">0</span>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-search"></i>
-                <span class="stat-label">Searches</span>
-                <span class="stat-value" id="searchCount">0</span>
-            </div>
-        </div>
-        
-        <div class="footer">
-            <div class="shortcuts-info">
-                <span><kbd>Ctrl</kbd> + <kbd>/</kbd> Focus Search</span>
-                <span><kbd>Esc</kbd> Close Settings</span>
-                <span><kbd>⚙️</kbd> Settings Panel</span>
-            </div>
-            <div class="quote" id="dailyQuote">"The best way to predict the future is to create it."</div>
+        <div class="card list">
+            <iconify-icon icon="eos-icons:ai" class="listIcon"></iconify-icon>
+            <a target="_blank" href="https://www.reddit.com/r/programming/" class="listItem">Programming</a>
+            <a target="_blank" href="https://www.reddit.com/r/rust/" class="listItem">Rust</a>
+            <a target="_blank" href="https://drive.google.com/drive/shared-with-me" class="listItem">Drive</a>
+            <a target="_blank" href="https://www.reddit.com/r/Python/" class="listItem">Python</a>
         </div>
     </div>
     
     <script src="script.js"></script>
-    <script src="particles.js"></script>
 </body>
 </html>
